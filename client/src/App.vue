@@ -6,55 +6,43 @@
       dark
     >
       <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
+        <v-toolbar-title>Nexus</v-toolbar-title>
       </div>
 
       <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+      <v-toolbar-items v-if="!user">
+        <v-btn :to="{ name: 'login' }">Login</v-btn>
+        <v-btn :to="{ name: 'signup' }">Sign Up</v-btn>
+      </v-toolbar-items>
+      <v-toolbar-items v-if="user">
+        <v-btn @click="logout">Logout</v-btn>
+      </v-toolbar-items>
     </v-app-bar>
 
     <v-content>
-      <HelloWorld/>
+      <router-view/>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   name: 'App',
-
-  components: {
-    HelloWorld,
+  data() {
+    return {
+      fixed: false,
+    };
   },
-
-  data: () => ({
-    //
-  }),
+  computed: {
+    ...mapState('auth', { user: 'payload' }),
+  },
+  methods: {
+    ...mapActions('auth', { authLogout: 'logout' }),
+    logout() {
+      this.authLogout().then(() => this.$router.push('/login'));
+    },
+  },
 };
 </script>

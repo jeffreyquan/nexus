@@ -39,7 +39,7 @@
 import { mapActions, mapState } from 'vuex';
 
 export default {
-  name: 'signUp',
+  name: 'login',
   data: () => ({
     valid: false,
     user: {
@@ -63,6 +63,7 @@ export default {
 
     login() {
       if (this.valid) {
+        console.log(this.user);
         this.authenticate({
           strategy: 'local',
           ...this.user,

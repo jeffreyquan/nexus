@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-slide-y-transition mode="out-in">
-      <v-layout row align-center wrap>
+      <v-layout row wrap>
         <v-progress-circular
           v-if="loadingBoard || loadingLists"
           :size="50"
@@ -14,8 +14,31 @@
           <v-flex sm3 v-for="list in lists" :key="list._id" pa-2>
             <v-card v-if="!loadingLists">
               <v-card-title primary-title>
-                <div class="headline">{{ list.name }}</div>
+                <v-layout column>
+                  <v-flex xs12>
+                    <div class="headline">{{ list.name }}</div>
+                  </v-flex>
+                  <div v-if="cardsByListId[list._id]">
+                    <v-flex
+                      xs12
+                      v-for="card in cardsByListId[list._id]"
+                      :key="card._id"
+                      class="pa-1"
+                    >
+                      <v-card>
+                        {{ card.title }}
+                      </v-card>
+                    </v-flex>
+                  </div>
+                </v-layout>
               </v-card-title>
+              <v-card-actions>
+                  <create-card
+                    :listId="list._id"
+                    :boardId="$route.params.id"
+                  >
+                  </create-card>
+              </v-card-actions>
             </v-card>
           </v-flex>
           <v-flex sm4 pa-2>
@@ -28,10 +51,10 @@
               <div>
                 <v-form
                   v-if="!creatingList"
+                  v-model="validList"
+                  ref="form"
                   @submit.prevent="createList"
                   @keydown.prevent.enter
-                  ref="form"
-                  v-model="validList"
                 >
                   <v-text-field
                     v-model="list.name"
@@ -58,9 +81,13 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
+import CreateCard from '../components/CreateCard.vue';
 
 export default {
   name: 'board',
+  components: {
+    CreateCard,
+  },
   data: () => ({
     board: {},
     validList: false,
@@ -91,10 +118,21 @@ export default {
       const lists = response.data || response;
       console.log(this.lists);
     });
+    this.findCards({
+      query: {
+        boardId: this.$route.params.id,
+      },
+    }).then((response) => {
+      console.log(response);
+      // eslint-disable-next-line no-unused-vars
+      const cards = response.data || response;
+      console.log(this.cards);
+    });
   },
   methods: {
     ...mapActions('boards', { getBoard: 'get' }),
     ...mapActions('lists', { findLists: 'find' }),
+    ...mapActions('cards', { findCards: 'find' }),
     createList() {
       if (this.validList) {
         const { List } = this.$FeathersVuex.api;
@@ -119,12 +157,30 @@ export default {
       creatingList: 'isCreatePending',
     }),
     ...mapGetters('lists', { findListsInStore: 'find' }),
+    ...mapGetters('cards', { findCardsInStore: 'find' }),
     lists() {
       return this.findListsInStore({
         query: {
           boardId: this.$route.params.id,
         },
       }).data;
+    },
+    cards() {
+      return this.findCardsInStore({
+        query: {
+          boardId: this.$route.params.id,
+        },
+      }).data;
+    },
+    cardsByListId() {
+      return this.cards.reduce((obj, card) => {
+        if (!obj[card.listId]) {
+          // eslint-disable-next-line no-param-reassign
+          obj[card.listId] = [];
+        }
+        obj[card.listId].push(card);
+        return obj;
+      }, {});
     },
   },
 };

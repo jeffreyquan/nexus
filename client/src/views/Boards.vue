@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 <template>
   <v-container fluid>
     <v-slide-y-transition mode="out-in">
@@ -28,10 +29,10 @@
               <div>
                 <v-form
                   v-if="!creating"
+                  v-model="valid"
+                  ref="form"
                   @submit.prevent="createBoard"
                   @keydown.prevent.enter
-                  ref="form"
-                  v-model="valid"
                 >
                   <v-text-field
                     v-model="board.name"
@@ -93,13 +94,18 @@ export default {
     },
   },
   computed: {
+    ...mapState('auth', { user: 'payload' }),
     ...mapState('boards', {
       loading: 'isFindPending',
       creating: 'isCreatePending',
     }),
     ...mapGetters('boards', { findBoardsInStore: 'find' }),
     boards() {
-      return this.findBoardsInStore({ query: {} }).data;
+      return this.user ? this.findBoardsInStore({
+        query: {
+          ownerId: this.user.user._id,
+        },
+      }).data : [];
     },
   },
 };

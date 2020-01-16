@@ -1,17 +1,24 @@
 <template>
   <v-container fluid>
     <v-slide-y-transition mode="out-in">
-      <v-layout column align-center>
+      <v-layout row align-center wrap>
         <v-progress-circular
           v-if="loading"
           :size="50"
           color="primary"
           indeterminate
          ></v-progress-circular>
-         <pre v-if="!loading">
-           {{ boards }}
-         </pre>
-          <v-flex sm4>
+          <v-flex sm3 v-for="board in boards" :key="board._id" pa-2>
+            <v-card v-if="!loading">
+              <v-card-title primary-title>
+                <div class="headline">{{ board.name }}</div>
+              </v-card-title>
+              <v-card-actions>
+                <v-btn color="primary" :to="{ name: 'board', params: { id: board._id } }">Go</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+          <v-flex sm4 pa-2>
             <v-card
             class="mx-auto"
             max-width="400"
@@ -34,6 +41,12 @@
                   ></v-text-field>
                   <v-btn type="submit" :disabled="!valid">Create</v-btn>
                 </v-form>
+                <v-progress-circular
+                  v-if="creating"
+                  :size="50"
+                  color="primary"
+                  indeterminate
+                ></v-progress-circular>
               </div>
             </v-card-text>
           </v-card>
@@ -49,7 +62,6 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 export default {
   name: 'boards',
   data: () => ({
-    creating: false,
     valid: false,
     board: {
       name: '',
@@ -74,11 +86,17 @@ export default {
         console.log(Board);
         const board = new Board(this.board);
         board.save();
+        this.board = {
+          name: '',
+        };
       }
     },
   },
   computed: {
-    ...mapState('boards', { loading: 'isFindPending' }),
+    ...mapState('boards', {
+      loading: 'isFindPending',
+      creating: 'isCreatePending',
+    }),
     ...mapGetters('boards', { findBoardsInStore: 'find' }),
     boards() {
       return this.findBoardsInStore({ query: {} }).data;

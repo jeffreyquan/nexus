@@ -13,7 +13,7 @@ module.exports = function (app) {
     },
     boardId: {
       type: Schema.Types.ObjectId,
-      ref: 'boards',
+      ref: 'Board',
     },
     order: {
       type: Number,

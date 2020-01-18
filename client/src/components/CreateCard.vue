@@ -37,7 +37,7 @@
 <script>
 export default {
   name: 'create-card',
-  props: ['listId', 'boardId'],
+  props: ['listId', 'boardId', 'createActivity', 'user'],
   data: () => ({
     creatingCard: false,
     validCard: false,
@@ -63,6 +63,7 @@ export default {
           title: '',
           members: [],
         };
+        this.createActivity(`**${this.user.name}** created card **${card.title}**`);
       }
     },
   },

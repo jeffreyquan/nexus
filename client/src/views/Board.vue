@@ -9,7 +9,7 @@
           indeterminate
         >
         </v-progress-circular>
-        <v-flex xs10 v-if="!loadingBoardError">
+        <v-flex xs10 v-if="!loadingBoardError && user">
           <v-layout row wrap>
             <v-flex xs12>
               <h2 v-if="board">{{ board.name }}</h2>
@@ -83,28 +83,7 @@
           </v-layout>
         </v-flex>
         <v-flex xs2>
-          <v-layout row fill-height style="align-items:stretch;">
-            <v-flex xs12>
-              <v-card height="50%">
-                <v-card-title primary-title>
-                  <div>
-                    <h3 class="headline mb-0">Activities</h3>
-                  </div>
-                </v-card-title>
-                <v-list three-line class="scroll-y">
-                  <v-list-tile v-for="activity in activitiesByDate" :key="activity._id">
-                    <v-list-tile-content>
-                      <div></div>
-                    </v-list-tile-content>
-                    <v-list-tile-content>
-                      <span class="mdi mdi-tooltip"></span>
-                      <v-list-tile-title v-html="markdown(activity.text)"></v-list-tile-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                </v-list>
-              </v-card>
-            </v-flex>
-          </v-layout>
+          <activities :activitiesByDate="activitiesByDate"></activities>
         </v-flex>
       </v-layout>
     </v-layout>
@@ -112,13 +91,14 @@
 </template>
 
 <script>
-import marked from 'marked';
 import { mapActions, mapGetters, mapState } from 'vuex';
+import Activities from '../components/Activities.vue';
 import CreateCard from '../components/CreateCard.vue';
 
 export default {
   name: 'board',
   components: {
+    Activities,
     CreateCard,
   },
   data: () => ({
@@ -137,37 +117,23 @@ export default {
     ],
   }),
   mounted() {
-    this.getBoard(this.$route.params.id)
-      .then((res) => {
-        this.board = res.data || res;
-        console.log(this.board);
-      });
+    this.getBoard(this.$route.params.id);
     this.findLists({
       query: {
         boardId: this.$route.params.id,
       },
-    }).then((res) => {
-      // eslint-disable-next-line no-unused-vars
-      const lists = res.data || res;
-      console.log(this.lists);
     });
+
     this.findCards({
       query: {
         boardId: this.$route.params.id,
       },
-    }).then((res) => {
-      // eslint-disable-next-line no-unused-vars
-      const cards = res.data || res;
-      console.log(this.cards);
     });
+
     this.findActivities({
       query: {
         boardId: this.$route.params.id,
       },
-    }).then((res) => {
-      // eslint-disable-next-line no-unused-vars
-      const activities = res.data || res;
-      console.log(this.activities);
     });
   },
   methods: {
@@ -179,7 +145,6 @@ export default {
       if (this.validList) {
         const { List } = this.$FeathersVuex.api;
         this.list.boardId = this.$route.params.id;
-        console.log(List);
         this.list.boardId = this.$route.params.id;
         const list = new List(this.list);
         await list.save();
@@ -200,7 +165,6 @@ export default {
       activity.save();
     },
     startDraggingCard(card) {
-      console.log('started dragging card...', card);
       this.draggingCard = card;
     },
     setDroppingList(event, list) {
@@ -219,9 +183,6 @@ export default {
       }
       this.droppingList = null;
       this.draggingCard = null;
-    },
-    markdown(str) {
-      return marked(str);
     },
   },
   computed: {
@@ -280,9 +241,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.scroll {
-  overflow-y: auto;
-}
-</style>

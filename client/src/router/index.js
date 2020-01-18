@@ -6,7 +6,7 @@ import Login from '../views/Login.vue';
 import Boards from '../views/Boards.vue';
 import Board from '../views/Board.vue';
 
-import store from '../store/index';
+import store from '../store';
 
 Vue.use(VueRouter);
 

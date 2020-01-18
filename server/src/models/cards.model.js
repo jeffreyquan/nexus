@@ -26,15 +26,15 @@ module.exports = function (app) {
     },
     boardId: {
       type: Schema.Types.ObjectId,
-      ref: 'boards'
+      ref: 'Board'
     },
     listId: {
       type: Schema.Types.ObjectId,
-      ref: 'lists'
+      ref: 'List'
     },
     members: [{
       type: Schema.Types.ObjectId,
-      ref: 'users'
+      ref: 'User'
     }],
   }, {
     timestamps: true

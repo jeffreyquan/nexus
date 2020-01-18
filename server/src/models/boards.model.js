@@ -13,11 +13,11 @@ module.exports = function (app) {
     },
     ownerId: {
       type: Schema.Types.ObjectId,
-      ref: 'users'
+      ref: 'User'
     },
     memberIds: [{
       type: Schema.Types.ObjectId,
-      ref: 'users'
+      ref: 'User'
     }]
   }, {
     timestamps: true

@@ -4,10 +4,10 @@
       <v-layout column align-center>
         <v-form
           v-if="!loading"
+          v-model="valid"
           @submit.prevent="login"
           @keydown.prevent.enter
           ref="form"
-          v-model="valid"
         >
           <v-text-field
             v-model="user.email"
@@ -17,7 +17,7 @@
           ></v-text-field>
           <v-text-field
             v-model="user.password"
-            :rules="passwordRules"
+            :rules="notEmptyRules"
             label="Password"
             type="password"
             required
@@ -37,6 +37,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
+import notEmptyRules from '../rules';
 
 export default {
   name: 'login',
@@ -50,20 +51,15 @@ export default {
       v => !!v || 'E-mail is required',
       v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
     ],
-    passwordRules: [
-      v => !!v || 'Password is required',
-    ],
+    notEmptyRules,
   }),
   computed: {
     ...mapState('users', { loading: 'isAuthenticatePending' }),
   },
   methods: {
-
     ...mapActions('auth', ['authenticate']),
-
     login() {
       if (this.valid) {
-        console.log(this.user);
         this.authenticate({
           strategy: 'local',
           ...this.user,

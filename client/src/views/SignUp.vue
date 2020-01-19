@@ -88,8 +88,7 @@ export default {
         const user = new User(this.user);
         user
           .save()
-          .then((data) => {
-            console.log(data);
+          .then(() => {
             this.$router.push('/login');
           });
       }

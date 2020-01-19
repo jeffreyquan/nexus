@@ -47,7 +47,6 @@ export default {
   }),
   methods: {
     async onCreateBoard() {
-      console.log(this.board);
       if (this.valid) {
         await this.createBoard(this.board);
         this.board = {

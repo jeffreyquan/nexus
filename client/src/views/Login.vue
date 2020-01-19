@@ -66,7 +66,7 @@ export default {
         }).then(() => {
           this.$router.push('/boards');
         }).catch(() => {
-          console.log('error....');
+          this.$router.push('/login');
         });
       }
     },

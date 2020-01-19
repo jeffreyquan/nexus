@@ -47,38 +47,12 @@
               </v-card>
             </v-flex>
             <v-flex sm4 pa-2>
-              <v-card
-                class="mx-auto"
-                max-width="400"
-              >
-                <v-card-text class="text--primary">
-                  <div>Create List</div>
-                  <div>
-                    <v-form
-                      v-if="!creatingList"
-                      v-model="validList"
-                      ref="form"
-                      @submit.prevent="createList"
-                      @keydown.prevent.enter
-                    >
-                      <v-text-field
-                        v-model="list.name"
-                        :rules="nameRules"
-                        label="Name"
-                        required
-                      ></v-text-field>
-                      <v-btn type="submit" :disabled="!validList">Create list</v-btn>
-                    </v-form>
-                    <v-progress-circular
-                      v-if="creatingList"
-                      :size="50"
-                      color="primary"
-                      indeterminate
-                    >
-                    </v-progress-circular>
-                  </div>
-                </v-card-text>
-              </v-card>
+              <list-form
+                :createActivity="createActivity"
+                :boardId="this.$route.params.id"
+                :user="user"
+                >
+              </list-form>
             </v-flex>
           </v-layout>
         </v-flex>
@@ -94,27 +68,19 @@
 import { mapActions, mapGetters, mapState } from 'vuex';
 import Activities from '../components/Activities.vue';
 import CardForm from '../components/CardForm.vue';
+import ListForm from '../components/ListForm.vue';
 
 export default {
   name: 'board',
   components: {
     Activities,
     CardForm,
+    ListForm,
   },
   data: () => ({
     draggingCard: null,
     droppingList: null,
     board: {},
-    validList: false,
-    list: {
-      name: '',
-      boardId: '',
-      order: 0,
-      archived: false,
-    },
-    nameRules: [
-      v => !!v || 'Name is required',
-    ],
   }),
   mounted() {
     this.getBoard(this.$route.params.id);
@@ -141,21 +107,6 @@ export default {
     ...mapActions('lists', { findLists: 'find' }),
     ...mapActions('cards', { findCards: 'find' }),
     ...mapActions('activities', { findActivities: 'find' }),
-    async createList() {
-      if (this.validList) {
-        const { List } = this.$FeathersVuex.api;
-        this.list.boardId = this.$route.params.id;
-        this.list.boardId = this.$route.params.id;
-        const list = new List(this.list);
-        await list.save();
-        this.list = {
-          name: '',
-          order: 0,
-          archived: false,
-        };
-        this.createActivity(`**${this.user.user.name}** created list **${list.name}**`);
-      }
-    },
     createActivity(str) {
       const { Activity } = this.$FeathersVuex.api;
       const activity = new Activity();
@@ -195,7 +146,6 @@ export default {
     }),
     ...mapState('lists', {
       loadingLists: 'isFindPending',
-      creatingList: 'isCreatePending',
       loadingListsError: 'errorOnfind',
     }),
     ...mapState('cards', {

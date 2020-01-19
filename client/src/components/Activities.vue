@@ -8,7 +8,7 @@
           </div>
         </v-card-title>
         <v-list three-line>
-          <v-list-item v-for="activity in activitiesByDate" :key="activity._id" class="activity-block">
+          <v-list-item v-for="activity in activitiesByDate" :key="activity._id" class="activity-block" @click="">
             <v-list-item-avatar>
               <span class="mdi mdi-tooltip"></span>
             </v-list-item-avatar>

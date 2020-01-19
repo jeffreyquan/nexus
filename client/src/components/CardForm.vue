@@ -16,7 +16,7 @@
           >
             <v-text-field
               v-model="card.title"
-              :rules="titleRules"
+              :rules="notEmptyRules"
               label="Title"
               required
             ></v-text-field>
@@ -35,19 +35,19 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import notEmptyRules from '../rules';
+
 export default {
   name: 'card-form',
   props: ['listId', 'boardId', 'createActivity', 'user'],
   data: () => ({
-    creatingCard: false,
     validCard: false,
     card: {
       title: '',
       members: [],
     },
-    titleRules: [
-      v => !!v || 'Name is required',
-    ],
+    notEmptyRules,
   }),
   methods: {
     async createCard() {
@@ -56,9 +56,7 @@ export default {
         this.card.boardId = this.boardId;
         this.card.listId = this.listId;
         const card = new Card(this.card);
-        this.creatingCard = true;
         await card.save();
-        this.creatingCard = false;
         this.card = {
           title: '',
           members: [],
@@ -66,6 +64,11 @@ export default {
         this.createActivity(`**${this.user.name}** created card **${card.title}**`);
       }
     },
+  },
+  computed: {
+    ...mapState('cards', {
+      creatingCard: 'isCreatePending',
+    }),
   },
 };
 </script>

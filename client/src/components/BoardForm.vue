@@ -36,6 +36,7 @@
 import notEmptyRules from '../rules';
 
 export default {
+  name: 'board-form',
   props: ['creating', 'createBoard'],
   data: () => ({
     valid: false,

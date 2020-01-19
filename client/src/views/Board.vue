@@ -14,37 +14,20 @@
             <v-flex xs12>
               <h2 v-if="board">{{ board.name }}</h2>
             </v-flex>
-            <v-flex sm3 v-for="list in lists" :key="list._id" pa-2>
-              <v-card v-if="!loadingLists" @dragover="setDroppingList($event, list)" :class="droppingList === list ? 'light-blue' : ''" @dragend="dropCard()">
-                <v-card-title primary-title>
-                  <v-layout column>
-                    <v-flex xs12>
-                      <div class="headline">{{ list.name }}</div>
-                    </v-flex>
-                    <div v-if="cardsByListId[list._id]">
-                      <v-flex
-                        xs12
-                        v-for="card in cardsByListId[list._id]"
-                        :key="card._id"
-                        class="pa-1"
-                      >
-                        <v-card draggable="true" @dragstart="startDraggingCard(card)">
-                          {{ card.title }}
-                        </v-card>
-                      </v-flex>
-                    </div>
-                  </v-layout>
-                </v-card-title>
-                <v-card-actions>
-                    <card-form
-                      :user="user.user"
-                      :createActivity="createActivity"
-                      :listId="list._id"
-                      :boardId="$route.params.id"
-                    >
-                    </card-form>
-                </v-card-actions>
-              </v-card>
+            <v-flex row v-if="!loadingLists">
+              <v-flex sm3 v-for="list in lists" :key="list._id" pa-2>
+                <list-tile
+                  :list="list"
+                  :setDroppingList="setDroppingList"
+                  :droppingList="droppingList"
+                  :cardsByListId="cardsByListId"
+                  :startDraggingCard="startDraggingCard"
+                  :dropCard="dropCard"
+                  :createActivity="createActivity"
+                  :user="user"
+                  >
+                </list-tile>
+              </v-flex>
             </v-flex>
             <v-flex sm4 pa-2>
               <list-form
@@ -67,15 +50,15 @@
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
 import Activities from '../components/Activities.vue';
-import CardForm from '../components/CardForm.vue';
 import ListForm from '../components/ListForm.vue';
+import ListTile from '../components/ListTile.vue';
 
 export default {
   name: 'board',
   components: {
     Activities,
-    CardForm,
     ListForm,
+    ListTile,
   },
   data: () => ({
     draggingCard: null,

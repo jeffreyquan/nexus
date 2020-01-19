@@ -9,7 +9,7 @@
   "authentication": {
     "entity": "user",
     "service": "users",
-    "secret": "dRpWM02aEGP2xHz1sTa+dPBm9v8=",
+    "secret": "AUTH_SECRET",
     "authStrategies": [
       "jwt",
       "local"
@@ -28,5 +28,5 @@
       "passwordField": "password"
     }
   },
-  "mongodb": "mongodb://localhost:27017/nexus_server"
+  "mongodb": "MONGODB_NEXUS_URI"
 }

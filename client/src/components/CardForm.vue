@@ -36,7 +36,7 @@
 
 <script>
 export default {
-  name: 'create-card',
+  name: 'card-form',
   props: ['listId', 'boardId', 'createActivity', 'user'],
   data: () => ({
     creatingCard: false,

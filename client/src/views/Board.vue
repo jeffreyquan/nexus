@@ -36,13 +36,13 @@
                   </v-layout>
                 </v-card-title>
                 <v-card-actions>
-                    <create-card
+                    <card-form
                       :user="user.user"
                       :createActivity="createActivity"
                       :listId="list._id"
                       :boardId="$route.params.id"
                     >
-                    </create-card>
+                    </card-form>
                 </v-card-actions>
               </v-card>
             </v-flex>
@@ -93,13 +93,13 @@
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
 import Activities from '../components/Activities.vue';
-import CreateCard from '../components/CreateCard.vue';
+import CardForm from '../components/CardForm.vue';
 
 export default {
   name: 'board',
   components: {
     Activities,
-    CreateCard,
+    CardForm,
   },
   data: () => ({
     draggingCard: null,

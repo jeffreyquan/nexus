@@ -1,4 +1,4 @@
 {
-  "host": "nexus-server-app.feathersjs.com",
+  "host": "jq-nexus-server.herokuapp.com",
   "port": "PORT"
 }

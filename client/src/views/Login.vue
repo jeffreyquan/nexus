@@ -38,13 +38,10 @@
               </v-row>
             </v-form>
             <div class="error-message">
-              <v-alert
-                v-if="error"
-                type="error"
-                dense
-              >
-                {{ error }}
-              </v-alert>
+            <app-error-message
+              v-if="error"
+              :error="error"
+            ></app-error-message>
             </div>
           </v-col>
         </v-row>
@@ -56,9 +53,13 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import notEmptyRules from '../rules';
+import AppErrorMessage from '../components/AppErrorMessage.vue';
 
 export default {
   name: 'login',
+  components: {
+    AppErrorMessage,
+  },
   data: () => ({
     valid: false,
     error: '',

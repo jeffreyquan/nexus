@@ -1,26 +1,30 @@
 <template>
   <v-container fluid>
-    <v-slide-y-transition mode="out-in">
-      <v-layout row align-center wrap>
-        <v-progress-circular
-          v-if="loading"
-          :size="50"
-          color="primary"
-          indeterminate
-         ></v-progress-circular>
-          <v-flex row v-if="!loading">
-            <v-flex sm3 v-for="board in boards" :key="board._id" pa-2>
-              <board-tile :board="board"></board-tile>
-            </v-flex>
-          </v-flex>
-          <v-flex sm4 pa-2>
+    <v-row class="progress-bar">
+      <v-progress-linear
+      v-if="loading"
+      indeterminate
+      color="green"
+    ></v-progress-linear>
+    </v-row>
+    <v-row align="start" justify="center">
+      <v-col sm="12" md="8">
+        <v-row v-if="!loading">
+          <v-col cols="6" sm="6" md="4" lg="3" v-for="board in boards" :key="board._id" pa-2>
+            <board-tile
+            :board="board"
+            >
+            </board-tile>
+          </v-col>
+          <v-col cols="6" sm="6" md="4" lg="3">
             <board-form
-              :creating="creating"
-              :createBoard="createBoard"
+                :creating="creating"
+                :createBoard="createBoard"
             ></board-form>
-          </v-flex>
-      </v-layout>
-    </v-slide-y-transition>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -63,3 +67,9 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+.progress-bar {
+  height: 20px;
+}
+</style>

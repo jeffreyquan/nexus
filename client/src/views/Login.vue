@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12">
         <v-row justify="center" align="center">
-          <v-col xs="12" sm="3">
+          <v-col xs="12" sm="4" md="3">
             <v-form
               v-model="valid"
               @submit.prevent="login"
@@ -38,7 +38,11 @@
               </v-row>
             </v-form>
             <div class="error-message">
-              <v-alert v-if="error" type="error">
+              <v-alert
+                v-if="error"
+                type="error"
+                dense
+              >
                 {{ error }}
               </v-alert>
             </div>
@@ -82,10 +86,7 @@ export default {
           this.$router.push('/boards');
         }).catch(() => {
           this.error = 'Please try again.';
-          this.user = {
-            email: '',
-            password: '',
-          };
+          this.$refs.form.reset();
           setTimeout(() => {
             this.error = '';
           }, 2000);

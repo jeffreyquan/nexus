@@ -16,12 +16,14 @@
                 :rules="nameRules"
                 label="Name"
                 required
+                autocomplete="off"
               ></v-text-field>
               <v-text-field
                 v-model="user.email"
                 :rules="emailRules"
                 label="E-mail"
                 required
+                autocomplete="off"
               ></v-text-field>
               <v-text-field
                 v-model="user.password"
@@ -29,6 +31,7 @@
                 label="Password"
                 type="password"
                 required
+                autocomplete="off"
               ></v-text-field>
               <v-text-field
                 v-model="user.confirmPassword"
@@ -36,6 +39,7 @@
                 label="Confirm Password"
                 type="password"
                 required
+                autocomplete="off"
               ></v-text-field>
               <v-row align="center" justify="center">
                 <v-btn

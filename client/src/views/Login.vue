@@ -16,6 +16,7 @@
                 :rules="emailRules"
                 label="E-mail"
                 required
+                autocomplete="on"
               ></v-text-field>
               <v-text-field
                 v-model="user.password"
@@ -24,6 +25,7 @@
                 label="Password"
                 type="password"
                 required
+                autocomplete="on"
               ></v-text-field>
               <v-row align="center" justify="center">
                  <v-btn

@@ -1,37 +1,51 @@
 <template>
-  <v-container fluid>
-    <v-slide-y-transition mode="out-in">
-      <v-layout column align-center>
-        <v-form
-          v-if="!loading"
-          v-model="valid"
-          @submit.prevent="login"
-          @keydown.prevent.enter
-          ref="form"
-        >
-          <v-text-field
-            v-model="user.email"
-            :rules="emailRules"
-            label="E-mail"
-            required
-          ></v-text-field>
-          <v-text-field
-            v-model="user.password"
-            :rules="notEmptyRules"
-            label="Password"
-            type="password"
-            required
-          ></v-text-field>
-          <v-btn type="submit" :disabled="!valid">Login</v-btn>
-        </v-form>
-        <v-progress-circular
-          v-if="loading"
-          :size="50"
-          color="primary"
-          indeterminate
-         ></v-progress-circular>
-      </v-layout>
-    </v-slide-y-transition>
+  <v-container fluid fill-height>
+    <v-row>
+      <v-col cols="12">
+        <v-row justify="center" align="center">
+          <v-col xs="12" sm="3">
+            <v-form
+              v-model="valid"
+              @submit.prevent="login"
+              @keydown.prevent.enter
+              ref="form"
+            >
+              <v-text-field
+                v-model="user.email"
+                :disabled="loading"
+                :rules="emailRules"
+                label="E-mail"
+                required
+              ></v-text-field>
+              <v-text-field
+                v-model="user.password"
+                :disabled="loading"
+                :rules="notEmptyRules"
+                label="Password"
+                type="password"
+                required
+              ></v-text-field>
+              <v-row align="center" justify="center">
+                 <v-btn
+                  type="submit"
+                  class="ma-2"
+                  :loading="loading"
+                  :disabled="!valid"
+                  color="secondary"
+                >
+                  Login
+                </v-btn>
+              </v-row>
+            </v-form>
+            <div class="error-message">
+              <v-alert v-if="error" type="error">
+                {{ error }}
+              </v-alert>
+            </div>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -43,6 +57,7 @@ export default {
   name: 'login',
   data: () => ({
     valid: false,
+    error: '',
     user: {
       email: '',
       password: '',
@@ -66,10 +81,24 @@ export default {
         }).then(() => {
           this.$router.push('/boards');
         }).catch(() => {
-          this.$router.push('/login');
+          this.error = 'Please try again.';
+          this.user = {
+            email: '',
+            password: '',
+          };
+          setTimeout(() => {
+            this.error = '';
+          }, 2000);
         });
       }
     },
   },
 };
 </script>
+
+<style scoped>
+.error-message {
+  height: 10rem;
+  margin-top: 1rem;
+}
+</style>

@@ -1,47 +1,56 @@
 <template>
-<v-flex sm12 pa-2>
   <v-card
-    class="mx-auto"
-    max-width="400"
+    class="card-form"
   >
-    <v-card-text class="text--primary">
-      <div>Create Card</div>
-        <div>
-          <v-form
-            v-if="!creatingCard"
-            v-model="validCard"
-            ref="form"
-            @submit.prevent="createCard"
-            @keydown.prevent.enter
-          >
-            <v-text-field
-              v-model="card.title"
-              :rules="notEmptyRules"
-              label="Title"
-              required
-            ></v-text-field>
-            <v-btn type="submit" :disabled="!validCard">Create Card</v-btn>
-          </v-form>
-          <v-progress-circular
-            v-if="creatingCard"
-            :size="50"
-            color="primary"
-            indeterminate
-          ></v-progress-circular>
-        </div>
-      </v-card-text>
-    </v-card>
-  </v-flex>
+    <v-row align="center">
+      <v-col cols="12">
+        <v-form
+          v-if="!creatingCard"
+          v-model="validCard"
+          ref="form"
+          @submit.prevent="createCard"
+          @keydown.prevent.enter
+        >
+          <v-row justify="center" align="center" no-gutters>
+            <v-col cols="8">
+              <v-text-field
+                v-model="card.title"
+                :rules="notEmptyRules"
+                label="Title"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="2">
+              <v-btn
+                type="submit" :disabled="!validCard"
+                text
+                icon
+              >
+                <v-icon dark large>mdi-plus</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-col>
+    </v-row>
+    <v-progress-linear
+      v-if="creatingCard"
+      color="deep-purple accent-4"
+      indeterminate
+      rounded
+      height="6"
+    ></v-progress-linear>
+  </v-card>
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import notEmptyRules from '../rules';
 
 export default {
   name: 'card-form',
   props: ['listId', 'boardId', 'createActivity', 'user'],
   data: () => ({
+    creatingCard: false,
     validCard: false,
     card: {
       title: '',
@@ -56,7 +65,9 @@ export default {
         this.card.boardId = this.boardId;
         this.card.listId = this.listId;
         const card = new Card(this.card);
+        this.creatingCard = true;
         await card.save();
+        this.creatingCard = false;
         this.card = {
           title: '',
           members: [],
@@ -65,10 +76,11 @@ export default {
       }
     },
   },
-  computed: {
-    ...mapState('cards', {
-      creatingCard: 'isCreatePending',
-    }),
-  },
 };
 </script>
+
+<style scopedlang="scss">
+.card-form {
+  padding: 0;
+}
+</style>

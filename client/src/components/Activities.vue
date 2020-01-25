@@ -33,7 +33,7 @@
 import marked from 'marked';
 
 export default {
-  props: ['activitiesByDate', 'toggleActivities'],
+  props: ['activitiesByDate'],
   methods: {
     markdown(str) {
       return marked(str);

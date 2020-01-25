@@ -3,7 +3,7 @@
     <v-row class="progress-bar board-header">
       <v-col cols="12">
         <v-progress-linear
-          v-if="loadingBoard || loadingLists"
+          v-if="loadingBoard || loadingLists || loadingCards"
           indeterminate
           color="green"
         ></v-progress-linear>
@@ -22,7 +22,7 @@
     <v-row>
       <v-col cols="12">
         <v-row
-          v-if="!loadingBoardError && !loadingLists && user"
+          v-if="!loadingBoardError && !loadingLists && !loadingCards && user"
           justify="start"
           align="start"
           class="list-tiles"
@@ -30,7 +30,7 @@
           <v-col
             v-for="list in lists"
             :key="list._id"
-            class="flex-grow-0"
+            class="flex-grow-0 pl-1"
           >
             <list-tile
               :list="list"
@@ -157,6 +157,7 @@ export default {
       loadingListsError: 'errorOnfind',
     }),
     ...mapState('cards', {
+      loadingCards: 'isFindPending',
       loadingCardsError: 'errorOnfind',
     }),
     ...mapGetters('lists', { findListsInStore: 'find' }),
@@ -213,7 +214,7 @@ export default {
 .activities-log {
   position: fixed;
   width: 300px;
-  top: 60px;
+  top: 50px;
   right: 0;
 }
 </style>

@@ -2,7 +2,7 @@
   <v-card
     class="card-form"
   >
-    <v-row align="center">
+    <v-row justify="center" align="center">
       <v-col cols="12">
         <v-form
           v-if="!creatingCard"
@@ -31,15 +31,15 @@
             </v-col>
           </v-row>
         </v-form>
+        <v-progress-linear
+          v-if="creatingCard"
+          color="deep-purple accent-4"
+          indeterminate
+          rounded
+          height="6"
+        ></v-progress-linear>
       </v-col>
     </v-row>
-    <v-progress-linear
-      v-if="creatingCard"
-      color="deep-purple accent-4"
-      indeterminate
-      rounded
-      height="6"
-    ></v-progress-linear>
   </v-card>
 </template>
 

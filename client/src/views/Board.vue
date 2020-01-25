@@ -1,49 +1,72 @@
 <template>
-  <v-container fluid>
-    <v-layout>
-      <v-layout row wrap>
-        <v-progress-circular
+  <v-container fluid pa-8>
+    <v-row class="progress-bar board-header">
+      <v-col cols="12">
+        <v-progress-linear
           v-if="loadingBoard || loadingLists"
-          :size="50"
-          color="primary"
           indeterminate
+          color="green"
+        ></v-progress-linear>
+        <v-row>
+          <h2 v-if="board">{{ board.name }}</h2>
+          <v-spacer></v-spacer>
+          <v-btn
+            v-if="board"
+            @click="toggleActivities"
+          >
+            Activities
+          </v-btn>
+        </v-row>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <v-row
+          v-if="!loadingBoardError && !loadingLists && user"
+          justify="start"
+          align="start"
+          class="list-tiles"
         >
-        </v-progress-circular>
-        <v-flex xs10 v-if="!loadingBoardError && user">
-          <v-layout row wrap>
-            <v-flex xs12>
-              <h2 v-if="board">{{ board.name }}</h2>
-            </v-flex>
-            <v-flex row v-if="!loadingLists">
-              <v-flex sm3 v-for="list in lists" :key="list._id" pa-2>
-                <list-tile
-                  :list="list"
-                  :setDroppingList="setDroppingList"
-                  :droppingList="droppingList"
-                  :cardsByListId="cardsByListId"
-                  :startDraggingCard="startDraggingCard"
-                  :dropCard="dropCard"
-                  :createActivity="createActivity"
-                  :user="user"
-                  >
-                </list-tile>
-              </v-flex>
-            </v-flex>
-            <v-flex sm4 pa-2>
-              <list-form
-                :createActivity="createActivity"
-                :boardId="this.$route.params.id"
-                :user="user"
-                >
-              </list-form>
-            </v-flex>
-          </v-layout>
-        </v-flex>
-        <v-flex xs2>
-          <activities :activitiesByDate="activitiesByDate"></activities>
-        </v-flex>
-      </v-layout>
-    </v-layout>
+          <v-col
+            v-for="list in lists"
+            :key="list._id"
+            class="flex-grow-0"
+          >
+            <list-tile
+              :list="list"
+              :setDroppingList="setDroppingList"
+              :droppingList="droppingList"
+              :cardsByListId="cardsByListId"
+              :startDraggingCard="startDraggingCard"
+              :dropCard="dropCard"
+              :createActivity="createActivity"
+              :user="user"
+            >
+            </list-tile>
+          </v-col>
+          <v-col
+            class="flex-grow-0"
+          >
+            <list-form
+              :createActivity="createActivity"
+              :boardId="this.$route.params.id"
+              :user="user"
+            >
+            </list-form>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+    <div
+      class="activities-log"
+      v-if="activitiesOpen"
+    >
+      <activities
+        :activitiesByDate="activitiesByDate"
+        @close-activities="toggleActivities"
+      >
+      </activities>
+    </div>
   </v-container>
 </template>
 
@@ -61,24 +84,23 @@ export default {
     ListTile,
   },
   data: () => ({
+    activitiesOpen: true,
     draggingCard: null,
     droppingList: null,
     board: {},
   }),
-  mounted() {
-    this.getBoard(this.$route.params.id);
+  async mounted() {
+    this.board = await this.getBoard(this.$route.params.id);
     this.findLists({
       query: {
         boardId: this.$route.params.id,
       },
     });
-
     this.findCards({
       query: {
         boardId: this.$route.params.id,
       },
     });
-
     this.findActivities({
       query: {
         boardId: this.$route.params.id,
@@ -97,6 +119,9 @@ export default {
       activity.boardId = this.$route.params.id;
       activity.userId = this.user.userId;
       activity.save();
+    },
+    toggleActivities() {
+      this.activitiesOpen = !this.activitiesOpen;
     },
     startDraggingCard(card) {
       this.draggingCard = card;
@@ -174,3 +199,21 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+.list-tiles {
+  display: flex;
+  flex: 1;
+  overflow-x: auto;
+  height: 80vh;
+  max-width: 100vw;
+  flex-wrap: nowrap;
+}
+
+.activities-log {
+  position: fixed;
+  width: 300px;
+  top: 60px;
+  right: 0;
+}
+</style>

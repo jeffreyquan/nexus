@@ -33,6 +33,7 @@
             class="flex-grow-0 pl-1"
           >
             <list-tile
+              @delete-list="deleteList(list._id, list.name)"
               :list="list"
               :setDroppingList="setDroppingList"
               :droppingList="droppingList"
@@ -109,9 +110,17 @@ export default {
   },
   methods: {
     ...mapActions('boards', { getBoard: 'get' }),
-    ...mapActions('lists', { findLists: 'find' }),
+    ...mapActions('lists', { findLists: 'find', removeList: 'remove' }),
     ...mapActions('cards', { findCards: 'find' }),
     ...mapActions('activities', { findActivities: 'find' }),
+    deleteList(id, listName) {
+      this.removeList([id, {
+        query: {
+          boardId: this.$route.params.id,
+        },
+      }]);
+      this.createActivity(`**${this.user.user.name}** deleted list **${listName}**`);
+    },
     createActivity(str) {
       const { Activity } = this.$FeathersVuex.api;
       const activity = new Activity();

@@ -6,7 +6,18 @@
     <v-card-title primary-title>
       <v-row>
         <v-col>
-          <div class="headline">{{ list.name }}</div>
+          <v-row align="center" class="px-1">
+            <div class="title">{{ list.name }}</div>
+            <v-spacer></v-spacer>
+            <v-btn
+              @click="onDeleteList"
+              text
+              icon
+              x-small
+            >
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-row>
           <div v-if="cardsByListId[list._id]">
             <v-row
               xs12
@@ -18,7 +29,12 @@
                 width="100%"
                 draggable="true" @dragstart="startDraggingCard(card)"
               >
-                {{ card.title }}
+                <card-tile
+                  :card="card"
+                  :list="list"
+                  :createActivity="createActivity"
+                  :user="user.user"
+                ></card-tile>
               </v-card>
             </v-row>
           </div>
@@ -37,6 +53,7 @@
 
 <script>
 import CardForm from './CardForm.vue';
+import CardTile from './CardTile.vue';
 
 export default {
   name: 'list-tile',
@@ -52,6 +69,12 @@ export default {
   ],
   components: {
     CardForm,
+    CardTile,
+  },
+  methods: {
+    onDeleteList() {
+      this.$emit('delete-list');
+    },
   },
 };
 </script>

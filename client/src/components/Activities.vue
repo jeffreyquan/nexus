@@ -13,7 +13,13 @@
           <h3 class="headline mb-0">Activities</h3>
         </div>
         <v-spacer></v-spacer>
-        <v-icon @click="onToggleActivities">mdi-close</v-icon>
+        <v-btn
+          text
+          icon
+          @click="onToggleActivities"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
       </v-card-title>
       <v-list three-line class="overflow-y-auto" max-height="80vh">
         <v-list-item v-for="activity in activitiesByDate" :key="activity._id" class="activity-block" @click="">

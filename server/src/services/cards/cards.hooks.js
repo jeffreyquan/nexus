@@ -3,8 +3,8 @@ const { isBoardOwner } = require('../authorisation');
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt'), isBoardOwner ],
-    find: [],
+    all: [ authenticate('jwt') ],
+    find: [isBoardOwner],
     get: [],
     create: [],
     update: [],

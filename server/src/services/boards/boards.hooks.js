@@ -20,6 +20,10 @@ module.exports = {
       setField({
         from: 'params.user._id',
         as: 'data.ownerId'
+      }),
+      setField({
+        from: 'params.user._id',
+        as: 'data.members'
       })
     ],
     update: [

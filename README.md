@@ -32,14 +32,7 @@ After cloning:
 
 **In the server directory in the terminal:**
 1. Run `npm install`
-2. Create a file named `.env` and add the following:
-```
-AUTH_SECRET=abcdefghijoeirioj30
-MONGODB_NEXUS_URI=mongodb://localhost:27017/nexus_server
-```
-Note: anything can be added after AUTH_SECRET=
-
-3. Run `npm run dev`
+2. Run `npm run dev`
 
 **In the root directory in the terminal**
 1. If you don't have MongoDB installed locally, install MongoDB Community Edition https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/.

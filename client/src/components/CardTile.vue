@@ -45,8 +45,11 @@ export default {
       this.createActivity(`**${this.user.name}** deleted card **${this.card.title}** from **${this.list.name}**`);
     },
     async editCard() {
-      await this.updateCard([this.card._id, { title: this.value }, { query: { boardId: this.$route.params.id } }]).title;
-      this.createActivity(`**${this.user.name}** changed **card** from **${this.initialCardTitle}** to **${this.value}**`);
+      if (this.initialCardTitle !== this.value) {
+        await this.updateCard([this.card._id, { title: this.value }, { query: { boardId: this.$route.params.id } }]).title;
+        await this.createActivity(`**${this.user.name}** changed **card** from **${this.initialCardTitle}** to **${this.value}**`);
+        this.initialCardTitle = this.value;
+      }
     },
   },
 };

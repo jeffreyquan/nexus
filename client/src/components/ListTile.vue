@@ -42,6 +42,7 @@
       </v-row>
     </v-card-title>
     <card-form
+      :list="list"
       :user="user.user"
       :createActivity="createActivity"
       :listId="list._id"

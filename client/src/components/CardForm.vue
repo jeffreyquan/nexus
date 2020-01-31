@@ -48,7 +48,7 @@ import notEmptyRules from '../rules';
 
 export default {
   name: 'card-form',
-  props: ['listId', 'boardId', 'createActivity', 'user'],
+  props: ['listId', 'list', 'boardId', 'createActivity', 'user'],
   data: () => ({
     creatingCard: false,
     validCard: false,
@@ -72,7 +72,7 @@ export default {
           title: '',
           members: [],
         };
-        this.createActivity(`**${this.user.name}** created card **${card.title}**`);
+        this.createActivity(`**${this.user.name}** added **${card.title}** card to **${this.list.name}** list`);
       }
     },
   },

@@ -71,7 +71,7 @@ export default {
           order: 0,
           archived: false,
         };
-        this.createActivity(`**${this.user.user.name}** created list **${list.name}**`);
+        this.createActivity(`**${this.user.user.name}** added **${list.name}** list to this board`);
       }
     },
   },

@@ -11,11 +11,11 @@ module.exports = function (app) {
       type: String,
       required: true 
     },
-    ownerId: {
+    owner: {
       type: Schema.Types.ObjectId,
       ref: 'User'
     },
-    memberIds: [{
+    users: [{
       type: Schema.Types.ObjectId,
       ref: 'User'
     }]

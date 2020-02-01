@@ -1,4 +1,5 @@
 {
   "host": "jq-nexus-server.herokuapp.com",
-  "port": "PORT"
+  "port": "PORT",
+  "mongodb": "MONGODB_NEXUS_URI"
 }

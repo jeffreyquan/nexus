@@ -55,8 +55,9 @@ module.exports = {
 
         const promises = userIds.map(userId => context.app.service('users').get(userId));
       
-        Promise.all(promises).then(results => {
-          context.result.users = results;
+        return Promise.all(promises).then(data => {
+          context.result.users = data;
+          console.log(context);
           return context;
         });
       }

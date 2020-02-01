@@ -7,41 +7,41 @@ module.exports = {
     find: [
       setField({
         from: 'params.user._id',
-        as: 'params.query.ownerId'
+        as: 'params.query.owner'
       })
     ],
     get: [
       setField({
         from: 'params.user._id',
-        as: 'params.query.ownerId'
+        as: 'params.query.users'
       })
     ],
     create: [
       setField({
         from: 'params.user._id',
-        as: 'data.ownerId'
+        as: 'data.owner'
       }),
       setField({
         from: 'params.user._id',
-        as: 'data.members'
+        as: 'data.users'
       })
     ],
     update: [
       setField({
         from: 'params.user._id',
-        as: 'params.query.ownerId'
+        as: 'params.query.owner'
       })
     ],
     patch: [
       setField({
         from: 'params.user._id',
-        as: 'params.query.ownerId'
+        as: 'params.query.owner'
       })
     ],
     remove: [
       setField({
         from: 'params.user._id',
-        as: 'params.query.ownerId'
+        as: 'params.query.owner'
       })
     ]
   },
@@ -49,7 +49,18 @@ module.exports = {
   after: {
     all: [],
     find: [],
-    get: [],
+    get: [
+      async context => {
+        const userIds = context.result.users;
+
+        const promises = userIds.map(userId => context.app.service('users').get(userId));
+      
+        Promise.all(promises).then(results => {
+          context.result.users = results;
+          return context;
+        });
+      }
+    ],
     create: [],
     update: [],
     patch: [],

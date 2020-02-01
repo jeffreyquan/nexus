@@ -28,5 +28,5 @@
       "passwordField": "password"
     }
   },
-  "mongodb": "MONGODB_NEXUS_URI"
+  "mongodb": "mongodb://localhost:27017/nexus_server"
 }

@@ -6,7 +6,7 @@ async function isBoardOwner(context) {
   const boards = mongoose.model('boards');
   const board = await boards.findOne({ _id: boardId });
   if (board) {
-    if (board.ownerId.toString() === _id.toString()) {
+    if (board.owner.toString() === _id.toString()) {
       return context;
     } else {
       return Promise.reject(new Error('Unauthorised'));

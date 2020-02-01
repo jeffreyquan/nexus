@@ -12,7 +12,7 @@
         <v-row v-if="!loading">
           <v-col cols="6" sm="6" md="4" lg="3" v-for="board in boards" :key="board._id" pa-2>
             <board-tile
-            :board="board"
+              :board="board"
             >
             </board-tile>
           </v-col>
@@ -60,7 +60,7 @@ export default {
     boards() {
       return this.user ? this.findBoardsInStore({
         query: {
-          ownerId: this.user.user._id,
+          users: this.user.user._id,
         },
       }).data : [];
     },

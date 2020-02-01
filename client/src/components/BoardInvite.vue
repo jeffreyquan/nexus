@@ -17,13 +17,17 @@ import { mapActions } from 'vuex';
 
 export default {
   name: 'board-invite',
-  data: () => ({
-    email: '',
-    emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-    ],
-  }),
+  props: ['users'],
+  data() {
+    return {
+      email: '',
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+        v => !this.users.some(user => user.email === v) || 'Already invited',
+      ],
+    };
+  },
   methods: {
     ...mapActions('users', { findUser: 'find' }),
     ...mapActions('boards', { addUserToBoard: 'patch' }),

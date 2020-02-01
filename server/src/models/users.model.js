@@ -5,7 +5,8 @@
 module.exports = function (app) {
   const modelName = 'users';
   const mongooseClient = app.get('mongooseClient');
-  const schema = new mongooseClient.Schema({
+  const { Schema } = mongooseClient;
+  const schema = new Schema({
     email: { 
       type: String,
       unique: true,
@@ -19,6 +20,10 @@ module.exports = function (app) {
       type: String,
       required: true
     },
+    boards: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Board'
+    }],
   }, {
     timestamps: true
   });

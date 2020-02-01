@@ -8,7 +8,10 @@
           color="green"
         ></v-progress-linear>
         <v-row>
-          <board-invite></board-invite>
+          <board-invite
+            v-if="board"
+            :users="this.board.users"
+          ></board-invite>
         </v-row>
         <v-row>
           <h2 v-if="board">{{ board.name }}</h2>
@@ -93,7 +96,7 @@ export default {
     activitiesOpen: true,
     draggingCard: null,
     droppingList: null,
-    board: {},
+    board: null,
   }),
   async mounted() {
     this.board = await this.getBoard(this.$route.params.id);

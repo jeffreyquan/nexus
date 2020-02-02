@@ -1,5 +1,6 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { setField } = require('feathers-authentication-hooks');
+const { isBoardOwner } = require('../authorisation');
 
 module.exports = {
   before: {
@@ -42,7 +43,8 @@ module.exports = {
       setField({
         from: 'params.user._id',
         as: 'params.query.owner'
-      })
+      }),
+      isBoardOwner
     ]
   },
 
@@ -52,12 +54,11 @@ module.exports = {
     get: [
       async context => {
         const userIds = context.result.users;
-
+        
         const promises = userIds.map(userId => context.app.service('users').get(userId));
       
         return Promise.all(promises).then(data => {
           context.result.users = data;
-          console.log(context);
           return context;
         });
       }

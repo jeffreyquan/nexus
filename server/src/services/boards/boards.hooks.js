@@ -7,7 +7,7 @@ module.exports = {
     find: [
       setField({
         from: 'params.user._id',
-        as: 'params.query.owner'
+        as: 'params.query.users'
       })
     ],
     get: [

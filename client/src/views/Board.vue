@@ -8,13 +8,17 @@
           color="green"
         ></v-progress-linear>
         <v-row>
+          <h2 class="pr-6" v-if="board">{{ board.name }}</h2>
+          <board-team
+            v-if="board"
+            :users="this.board.users"
+            class="pr-6"
+          >
+          </board-team>
           <board-invite
             v-if="board"
             :users="this.board.users"
           ></board-invite>
-        </v-row>
-        <v-row>
-          <h2 v-if="board">{{ board.name }}</h2>
           <v-spacer></v-spacer>
           <v-btn
             v-if="board"
@@ -81,6 +85,7 @@
 import { mapActions, mapGetters, mapState } from 'vuex';
 import Activities from '../components/Activities.vue';
 import BoardInvite from '../components/BoardInvite.vue';
+import BoardTeam from '../components/BoardTeam.vue';
 import ListForm from '../components/ListForm.vue';
 import ListTile from '../components/ListTile.vue';
 
@@ -89,6 +94,7 @@ export default {
   components: {
     Activities,
     BoardInvite,
+    BoardTeam,
     ListForm,
     ListTile,
   },

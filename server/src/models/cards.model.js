@@ -32,7 +32,7 @@ module.exports = function (app) {
       type: Schema.Types.ObjectId,
       ref: 'List'
     },
-    members: [{
+    users: [{
       type: Schema.Types.ObjectId,
       ref: 'User'
     }],

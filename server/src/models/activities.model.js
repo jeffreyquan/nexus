@@ -11,10 +11,6 @@ module.exports = function (app) {
       type: String,
       required: true
     },
-    userId: {
-      type: Schema.Types.ObjectId,
-      ref: 'User'
-    },
     boardId: {
       type: Schema.Types.ObjectId,
       ref: 'Board'

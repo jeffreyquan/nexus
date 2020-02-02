@@ -21,13 +21,11 @@ async function isBoardUser(context) {
   const boards = mongoose.model('boards');
   const board = await boards.findOne({ _id: boardId });
   if (board) {
-    board.users.forEach(user => {
-      if (user._id.toString() === _id.toString()) {
-        return context;
-      } else {
-        return Promise.reject(new Error('Unauthorised'));
-      }
-    });
+    if ( board.users.some(user => user._id.toString() === _id.toString()) ) {
+      return context;
+    } else {
+      return Promise.reject(new Error('Unauthorised'));
+    }
   }
   return context;
 }

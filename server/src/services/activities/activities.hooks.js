@@ -1,12 +1,12 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const { isBoardOwner } = require('../authorisation');
+const { isBoardUser } = require('../authorisation');
 const { setField } = require('feathers-authentication-hooks');
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt'), isBoardOwner ],
-    find: [],
-    get: [],
+    all: [authenticate('jwt')],
+    find: [isBoardUser],
+    get: [isBoardUser],
     create: [
       setField({
         from: 'params.user._id',

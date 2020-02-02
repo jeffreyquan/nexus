@@ -10,7 +10,7 @@ module.exports = {
     create: [
       setField({
         from: 'params.user._id',
-        as: 'data.userId'
+        as: 'data.user'
       })
     ],
     update: [],

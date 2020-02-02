@@ -1,15 +1,33 @@
 <template>
-<v-form
-  @submit.prevent="inviteMember"
->
-  <v-text-field
-    v-model="email"
-    :rules="emailRules"
-    label="Email"
-    required
-  ></v-text-field>
-  <v-btn type="submit">Add</v-btn>
-</v-form>
+  <div class="text-center">
+    <v-menu
+      offset-y
+      :close-on-content-click="false"
+    >
+      <template v-slot:activator="{ on }">
+        <v-btn
+          v-on="on"
+        >
+          Invite
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item>
+           <v-form
+            @submit.prevent="inviteMember"
+          >
+            <v-text-field
+              v-model="email"
+              :rules="emailRules"
+              label="Email"
+              required
+            ></v-text-field>
+            <v-btn type="submit">Add</v-btn>
+          </v-form>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+  </div>
 </template>
 
 <script>

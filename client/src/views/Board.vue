@@ -140,7 +140,7 @@ export default {
       const activity = new Activity();
       activity.text = str;
       activity.boardId = this.$route.params.id;
-      activity.userId = this.user.userId;
+      activity.user = this.user.user;
       activity.save();
     },
     toggleActivities() {

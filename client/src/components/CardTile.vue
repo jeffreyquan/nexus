@@ -1,11 +1,12 @@
 <template>
   <v-row align="center">
     <v-col cols="10" class="body-2 pl-5">
-      <v-text-field
+      <v-textarea
         v-model="value"
         @blur="editCard"
+        rows="1"
       >
-      </v-text-field>
+      </v-textarea>
     </v-col>
     <v-col cols="2">
       <v-btn

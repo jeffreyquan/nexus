@@ -22,7 +22,8 @@
             </v-col>
             <v-col cols="2">
               <v-btn
-                type="submit" :disabled="!validCard"
+                type="submit"
+                :disabled="!validCard"
                 text
                 icon
               >

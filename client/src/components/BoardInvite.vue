@@ -13,16 +13,30 @@
       </template>
       <v-list>
         <v-list-item>
-           <v-form
+          <v-form
             @submit.prevent="inviteMember"
+            v-model="valid"
           >
-            <v-text-field
-              v-model="email"
-              :rules="emailRules"
-              label="Email"
-              required
-            ></v-text-field>
-            <v-btn type="submit">Add</v-btn>
+            <v-row justify="center" align="center" no-gutters>
+            <v-col cols="8">
+              <v-text-field
+                v-model="email"
+                :rules="emailRules"
+                label="Email"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="2">
+              <v-btn
+                type="submit"
+                :disabled="!valid"
+                text
+                icon
+              >
+                <v-icon dark large>mdi-plus</v-icon>
+              </v-btn>
+             </v-col>
+            </v-row>
           </v-form>
         </v-list-item>
       </v-list>
@@ -38,6 +52,7 @@ export default {
   props: ['users'],
   data() {
     return {
+      valid: false,
       email: '',
       emailRules: [
         v => !!v || 'E-mail is required',

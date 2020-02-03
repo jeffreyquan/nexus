@@ -11,13 +11,14 @@
           <h2 class="pr-6" v-if="board">{{ board.name }}</h2>
           <board-team
             v-if="board"
-            :users="this.board.users"
+            :users="board.users"
             class="pr-6"
           >
           </board-team>
           <board-invite
             v-if="board"
-            :users="this.board.users"
+            :users="board.users"
+            :createActivity="createActivity"
           ></board-invite>
           <v-spacer></v-spacer>
           <v-btn
@@ -102,10 +103,9 @@ export default {
     activitiesOpen: true,
     draggingCard: null,
     droppingList: null,
-    board: null,
   }),
   async mounted() {
-    this.board = await this.getBoard(this.$route.params.id);
+    this.getBoard(this.$route.params.id);
     this.findLists({
       query: {
         boardId: this.$route.params.id,
@@ -183,6 +183,7 @@ export default {
       loadingCards: 'isFindPending',
       loadingCardsError: 'errorOnfind',
     }),
+    ...mapGetters('boards', { findBoardInStore: 'get' }),
     ...mapGetters('lists', { findListsInStore: 'find' }),
     ...mapGetters('cards', { findCardsInStore: 'find' }),
     ...mapGetters('activities', { findActivitiesInStore: 'find' }),
@@ -192,6 +193,9 @@ export default {
           boardId: this.$route.params.id,
         },
       }).data;
+    },
+    board() {
+      return this.findBoardInStore(this.$route.params.id);
     },
     lists() {
       return this.findListsInStore({

@@ -18,8 +18,8 @@
           </v-col>
           <v-col cols="6" sm="6" md="4" lg="3">
             <board-form
-                :creating="creating"
-                :createBoard="createBoard"
+              :creating="creating"
+              :createBoard="createBoard"
             ></board-form>
           </v-col>
         </v-row>

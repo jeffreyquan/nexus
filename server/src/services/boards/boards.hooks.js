@@ -61,6 +61,7 @@ module.exports = {
             return context;
           }
         }
+        return context;
       }
     ],
     remove: [

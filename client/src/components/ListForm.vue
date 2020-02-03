@@ -9,7 +9,6 @@
           v-model="validList"
           ref="form"
           @submit.prevent="createList"
-          @keydown.prevent.enter
         >
           <v-row justify="center" align="center" no-gutters>
             <v-col cols="8">

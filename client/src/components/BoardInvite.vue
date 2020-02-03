@@ -25,6 +25,7 @@
                   v-model="email"
                   @keydown.enter.prevent
                   :rules="emailRules"
+                  :disabled="addingUser"
                   label="Email"
                   required
                 ></v-text-field>
@@ -39,6 +40,11 @@
                 >
                   <v-icon dark large>mdi-plus</v-icon>
                 </v-btn>
+                <v-progress-circular
+                  v-if="addingUser"
+                  indeterminate
+                  color="green"
+                ></v-progress-circular>
               </v-col>
             </v-row>
             <v-row justify="center">
@@ -54,11 +60,6 @@
               </app-success-message>
             </v-row>
           </v-form>
-          <v-progress-circular
-            v-if="updatingUsers"
-            indeterminate
-            color="green"
-          ></v-progress-circular>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -118,7 +119,7 @@ export default {
   },
   computed: {
     ...mapState('boards', {
-      updatingUsers: 'isPatchPending',
+      addingUser: 'isPatchPending',
     }),
   },
 };

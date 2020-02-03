@@ -9,12 +9,12 @@
           v-model="valid"
           ref="form"
           @submit.prevent="onCreateBoard"
-          @keydown.prevent.enter
         >
           <v-row justify="center" align="center" no-gutters>
             <v-col cols="8">
               <v-text-field
                 v-model="board.name"
+                @keydown.enter.prevent
                 :rules="notEmptyRules"
                 label="Name"
                 required
@@ -23,7 +23,8 @@
             </v-col>
             <v-col cols="2">
               <v-btn
-                type="submit"
+                type="button"
+                @click="onCreateBoard"
                 :disabled="!valid"
                 text
                 icon

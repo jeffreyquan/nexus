@@ -9,7 +9,6 @@
           v-model="validCard"
           ref="form"
           @submit.prevent="createCard"
-          @keydown.prevent.enter
         >
           <v-row justify="center" align="center" no-gutters>
             <v-col cols="8">

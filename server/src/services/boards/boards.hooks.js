@@ -1,6 +1,18 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { setField } = require('feathers-authentication-hooks');
 const { isBoardOwner } = require('../authorisation');
+const mongoose = require('mongoose');
+
+async function populateUsers(context) {
+  const userIds = context.result.users;
+
+  const promises = userIds.map(userId => context.app.service('users').get(userId));
+
+  return Promise.all(promises).then(data => {
+    context.result.users = data;
+    return context;
+  });
+}
 
 module.exports = {
   before: {
@@ -37,7 +49,19 @@ module.exports = {
       setField({
         from: 'params.user._id',
         as: 'params.query.owner'
-      })
+      }),
+      async context => {
+        const boardId = context.id;
+        const boards = mongoose.model('boards');
+        const board = await boards.findOne({_id: boardId });
+        if (context.data.$push.users) {
+          if (board.users.some(user => user._id.toString() === context.data.$push.users.toString())) {
+            return Promise.reject(new Error('User already added to board'));
+          } else {
+            return context;
+          }
+        }
+      }
     ],
     remove: [
       setField({
@@ -51,21 +75,10 @@ module.exports = {
   after: {
     all: [],
     find: [],
-    get: [
-      async context => {
-        const userIds = context.result.users;
-        
-        const promises = userIds.map(userId => context.app.service('users').get(userId));
-      
-        return Promise.all(promises).then(data => {
-          context.result.users = data;
-          return context;
-        });
-      }
-    ],
+    get: [populateUsers],
     create: [],
     update: [],
-    patch: [],
+    patch: [populateUsers],
     remove: []
   },
 

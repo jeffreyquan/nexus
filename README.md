@@ -60,11 +60,11 @@ This project is created with:
 ## Key Feaures
 * **Creation of boards** - create boards (projects) and, within those boards, create lists with cards
 * **Move cards between lists** - drag and drop cards to move them between lists
+* **Add users to boards** - ask collaborators to sign up and invite them to your board via their email. Users can create and edit lists and cards.
 
 <a name="future-developments"></a>
 ## Future Developments
 These are following features I would like to add:
-* **Adding members to boards** - at the moment, only the board creator can work on the board. I would like to allow members to be added to collaborate on a board.
 * **Rearrange lists** - allow lists to be rearranged in an order the user wants. This is a key feature of Trello.
 * **Rearrange cards within lists** - allow users to rearrange cards within lists. This is a key feature of Trello.
 * **Detail description of task within each card** - allow more information to be added within each card through clicking and opening a modal.

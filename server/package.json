@@ -52,7 +52,7 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
-    "axios": "^0.19.1",
+    "axios": "^0.21.1",
     "eslint": "^6.8.0",
     "mocha": "^6.2.2",
     "nodeman": "^1.1.2",

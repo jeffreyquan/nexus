@@ -17,7 +17,7 @@
     "core-js": "^3.4.4",
     "feathers-hooks-common": "^5.0.1",
     "feathers-vuex": "^3.4.0",
-    "marked": "^0.8.0",
+    "marked": "^4.0.10",
     "roboto-fontface": "*",
     "socket.io-client": "^2.3.0",
     "vue": "^2.6.10",
